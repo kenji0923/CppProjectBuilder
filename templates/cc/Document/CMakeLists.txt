@@ -1,0 +1,12 @@
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+  set (DOXYGEN_SOURCE_BROWSER YES)
+  set (DOXYGEN_INLINE_SOURCES YES)
+  set (EXTRACT_ALL YES)
+  message(STATUS ${PROJECT_SOURCE_DIR})
+  doxygen_add_docs(doc
+    ${LIBRARY_DIRECTORIES} ${EXECUTABLE_FILES} ${PROJECT_SOURCE_DIR}/Programs/mainpage.md
+    ALL
+    COMMENT "Generate manual pages"
+  )
+endif()

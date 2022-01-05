@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+  echo "Usage : $(basename ${BASH_SOURCE:-$0}) LIBRARY_NAME"
+  exit 1
+fi
+
+TEMPLATE_DIR=~/bin/templates/cc
+
+LIBRARY_NAME=$1
+LIBRARY_DIR=Libraries/$LIBRARY_NAME
+CC_FILENAME=$LIBRARY_DIR/src/${LIBRARY_NAME}.cc
+HH_FILENAME=$LIBRARY_DIR/include/${LIBRARY_NAME}.hh
+
+cp -r $TEMPLATE_DIR/Libraries/LIBRARY $LIBRARY_DIR
+
+mv ./$LIBRARY_DIR/src/LIBRARY.cc $CC_FILENAME
+mv ./$LIBRARY_DIR/include/LIBRARY.hh $HH_FILENAME
+
+SUBSTITUTE_COMMAND="s/SH_LIBRARY/${LIBRARY_NAME}/g"
+
+sed -i.bkp -e $SUBSTITUTE_COMMAND $CC_FILENAME
+sed -i.bkp -e $SUBSTITUTE_COMMAND $HH_FILENAME
+sed -i.bkp -e $SUBSTITUTE_COMMAND $LIBRARY_DIR/CMakeLists.txt
+
+rm ${CC_FILENAME}.bkp
+rm ${HH_FILENAME}.bkp
+rm $LIBRARY_DIR/CMakeLists.txt.bkp

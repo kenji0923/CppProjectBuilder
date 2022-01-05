@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+  echo "Usage : $(basename ${BASH_SOURCE:-$0}) PROJECT_NAME"
+  exit 1
+fi
+
+TEMPLATE_DIR=~/bin/templates/cc
+
+PROJECT_NAME=$1
+
+cp -r $TEMPLATE_DIR $PROJECT_NAME
+
+
+SUBSTITUTE_COMMAND="s/SH_PROJECT/${PROJECT_NAME}/g"
+sed -i.bkp -e $SUBSTITUTE_COMMAND $PROJECT_NAME/CMakeLists.txt
+
+rm $PROJECT_NAME/CMakeLists.txt.bkp
+rm -rf $PROJECT_NAME/LIBRARY
